@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %5p [%c] %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <!-- 3rdparty Loggers -->
+        <Logger name="jdbc.audit" level="warn">
+        </Logger>
+
+        <Logger name="jdbc.resultset" level="warn">
+        </Logger>
+
+        <Logger name="jdbc.connection" level="warn">
+        </Logger>
+
+        <!-- Root Logger -->
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
