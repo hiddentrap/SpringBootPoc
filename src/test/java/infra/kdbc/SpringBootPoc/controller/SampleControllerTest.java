@@ -9,8 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(SampleController.class)
 @Log4j2
@@ -21,11 +20,19 @@ class SampleControllerTest {
 
     @Test
     @DisplayName("HelloWorld 리턴 테스트")
-    public void helloWorldTest() throws Exception{
+    void helloWorldTest() throws Exception{
         mockMvc.perform(get("/hello"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("HelloWorld"));
-        log.info("hey hey");
+        log.info("롬복 로거 테스트");
+    }
+
+    @Test
+    void getEventTest() throws Exception {
+        mockMvc.perform(get("/events/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(1));
     }
 }
