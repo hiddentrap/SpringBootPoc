@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity // 테이블 스키마 mark
-@Table(name="Posts")
 public class Posts {
 
     @Id

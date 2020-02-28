@@ -2,13 +2,17 @@ package infra.kdbc.SpringBootPoc.domain;
 
 import org.junit.After;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 class PostsRepoTest {
 
     @Autowired
@@ -32,11 +36,11 @@ class PostsRepoTest {
                 .build());
 
         //when
-        Optional<Posts> post = postsRepository.findById(1L);
+        List<Posts> postsList = postsRepository.findAll();
 
         //then
-        System.out.println(post);
-        //assertEquals(title,post.get());
-        //assertEquals(content,post.getContent());
+        Posts posts = postsList.get(0);
+        assertEquals(title,posts.getTitle());
+        assertEquals(content,posts.getContent());
     }
 }
