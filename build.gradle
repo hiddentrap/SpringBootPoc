@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'eclipse'
+    id 'idea'
     id 'war'
 }
 
@@ -29,45 +30,40 @@ dependencies {
     // 로컬 jar 파일의 의존성 설정
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    // SpringBoot starters
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-json'
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
-    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     //implementation 'org.springframework.boot:spring-boot-starter-security'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1'
-
-    // JDBC Logging
-    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
-
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // QueryDsl
+    compile("com.querydsl:querydsl-jpa")
+    compile("com.querydsl:querydsl-apt")
 
     // Oracle JDBC Driver
     runtimeOnly 'com.oracle.ojdbc:ojdbc8'
-
-    // JSON
-    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-
-
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
     configurations {
-        all {
-			exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
+        all*.exclude module : 'spring-boot-starter-logging'
     }
+
 }
 
 test {
