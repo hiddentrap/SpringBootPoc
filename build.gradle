@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.2.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10' // querydsl plugin
     id 'java'
     id 'eclipse'
     id 'idea'
@@ -51,21 +52,57 @@ dependencies {
 
     // QueryDsl
     compile("com.querydsl:querydsl-jpa")
-    compile("com.querydsl:querydsl-apt")
+    compile("com.querydsl:querydsl-apt") // @DataJpaTest 용 in-memory DB
 
     // Oracle JDBC Driver
     runtimeOnly 'com.oracle.ojdbc:ojdbc8'
+    testCompile('com.h2database:h2')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
     configurations {
-        all*.exclude module : 'spring-boot-starter-logging'
+        all*.exclude module: 'spring-boot-starter-logging'
     }
 
 }
 
 test {
     useJUnitPlatform()
+}
+
+// querydsl 적용
+apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
+def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslDefault = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += file(querydslSrcDir)
+            //srcDirs = ['src/main/java', querydslSrcDir]
+        }
+    }
+}
+
+// gradle 5에서는 아래 내용 추가
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+idea {
+    module {
+        generatedSourceDirs += file(querydslSrcDir)
+    }
 }
