@@ -63,6 +63,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
+    // Testcontainers
+    testImplementation('org.testcontainers:junit-jupiter:1.12.4')
+
     configurations {
         all*.exclude module: 'spring-boot-starter-logging'
     }
